@@ -3,6 +3,9 @@ import { Construct } from 'constructs';
 
 import * as blueprints from "@aws-quickstart/eks-blueprints";
 
+import { TeamApplication } from '../teams/application-team';
+import { TeamPlatform } from '../teams/platform-team';
+
 export class AwsCdkEks extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id);
@@ -13,7 +16,11 @@ export class AwsCdkEks extends Construct {
     blueprints.EksBlueprint.builder()
       .account(account)
       .region(region)
-      .teams()
+      .teams( 
+        new TeamApplication('teste', account),
+        new TeamApplication('teste2', account),
+        new TeamPlatform(account) 
+      )
       .addOns()
       .build(scope, `${id}-ClusterEKS`)
   }
