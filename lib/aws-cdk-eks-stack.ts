@@ -5,6 +5,7 @@ import * as blueprints from "@aws-quickstart/eks-blueprints";
 
 import { TeamApplication } from '../teams/application-team';
 import { TeamPlatform } from '../teams/platform-team';
+import { KyvernoAddOn } from './kyverno-addon';
 
 export class AwsCdkEks extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -21,7 +22,10 @@ export class AwsCdkEks extends Construct {
         new TeamApplication('teste2', account),
         new TeamPlatform(account) 
       )
-      .addOns()
+      .addOns(
+        new blueprints.ClusterAutoScalerAddOn,
+        new KyvernoAddOn
+      )
       .build(scope, `${id}-ClusterEKS`)
   }
 }
